@@ -1,14 +1,29 @@
 from flask import Flask, request, send_from_directory
+import os
 import pandas as pd
 
 app = Flask(__name__)
 
-hotels = pd.read_csv('hotels.csv')
+CSV_PATH = os.path.abspath('hotels.csv')
+hotels = pd.read_csv(CSV_PATH)
 
 # Routes
 @app.route("/")
 def home():
-    return app.send_static_file('templates/home.html') 
+    return """
+    <h1>Welcome to the Hotel Summary API</h1>
+    <p>
+    Enpoints:
+    <ul>
+        <li>[GET] /hotels</li>
+        <li>[GET] /hotels/{name}</li>
+    </ul>
+    Queries:
+    <ul>
+        <li>year {integer}: The year of the summary. </li>
+    </ul>
+    </p>
+    """
 
 @app.route("/hotels")
 def get_hotels():
